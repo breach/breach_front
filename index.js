@@ -24,6 +24,8 @@ var setup = function() {
   //
   // ### _JSON ROUTES_
   //
+  app.get( '/auth/join',                require('./routes/auth.js').get_join);
+
   app.post('/auth/signup',              require('./routes/auth.js').post_signup);
   app.post('/auth/signin',              require('./routes/auth.js').post_signin);
 
@@ -37,16 +39,20 @@ common.log.out('Breach: front [Started]');
 
 common.PG_URL = process.env['BREACH_FRONT_PG_URL'] ||
   'postgres://dummy:dummy@localhost/breach_front';
+common.log.out('PG_URL: ' + common.PG_URL);
 
 common.PORT = process.env['BREACH_FRONT_PORT'] ?
   parseInt(process.env['BREACH_FRONT_PORT'], 10) : 0;
+common.log.out('PORT: ' + common.PORT);
 
 common.SECRET = process.env['BREACH_FRONT_SECRET'] || 'dummy';
+common.log.out('SECRET: ' + common.SECRET);
 
 common.CIO_SITE_ID = process.env['BREACH_CIO_SITE_ID'] || 'dummy';
+common.log.out('CIO_SITE_ID: ' + common.CIO_SITE_ID);
 common.CIO_SECRET_KEY = process.env['BREACH_CIO_SECRET_KEY'] || 'dummy';
+common.log.out('CIO_SECRET_KEY: ' + common.CIO_SECRET_KEY);
 
-console.log('PG_URL: ' + common.PG_URL);
 common.pg = new (require('pg').Client)(common.PG_URL);
 common.pg.connect(function(err) {
   if(err) {

@@ -6,9 +6,13 @@
  * @author: spolu
  *
  * @log:
+ * - 2014-05-06 spolu   Added `join` route
  * - 2014-05-04 spolu   Creation
  */
 "use strict"
+
+var async = require('async');
+var common = require('../lib/common.js');
 
 /******************************************************************************/
 /* UTILITY METHODS */
@@ -29,7 +33,7 @@ exports.authenticate = function(email, master) {
                           'Invalid Signup: Field Missing'));
   }
 
-  var email_r = /^[a-z0-9._-+%]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+  var email_r = /^[a-z0-9\.\_\-\+\%]+@[a-z0-9\.\-]+\.[a-z]{2,}$/;
   if(!email_r.exec(email)) {
     return cb_(common.err('auth_authenticate_error',
                           'Invalid Email: ' + email));
@@ -44,20 +48,20 @@ exports.authenticate = function(email, master) {
   async.series([
     function(cb_) {
        common.pg.query('SELECT * FROM users WHERE email=$1', 
-                       [auth.email], function(err, rows) {
+                       [auth.email], function(err, data.rows) {
          if(err) {
            return cb_(err);
          }
-         else if(rows.length === 0) {
+         else if(data.rows.length === 0) {
            return cb_(common.err('auth_authenticate_error',
                                  'User not found: ' + auth.email));
          }
-         else if(rows[0].master !== auth.master) {
+         else if(data.rows[0].master !== auth.master) {
            return cb_(factory.error('auth_authenticate_error',
                                     'Wrong password for: ' + auth.email));
          }
          else {
-           user = rows[0];
+           user = data.rows[0];
            return cb_();
          }
        });
@@ -70,6 +74,89 @@ exports.authenticate = function(email, master) {
 /******************************************************************************/
 /* ROUTES */
 /******************************************************************************/
+//
+// ### GET /auth/join
+//
+exports.get_join = function(req, res, next) {
+  var user = null;
+  var exist = false;
+
+  async.series([
+    function(cb_) {
+      var email = req.param('email').toLowerCase();
+      var email_r = /^[a-z0-9\.\_\-\+\%]+@[a-z0-9\.\-]+\.[a-z]{2,}$/;
+      if(!email_r.exec(email)) {
+        return cb_(common.err('auth_signup_error',
+                              'Invalid Email: ' + email));
+      }
+    
+      user = {
+        email: email,
+        is_verified: false,
+      }
+      return cb_();
+    },
+    function(cb_) {
+       common.pg.query('SELECT * FROM users WHERE email=$1', 
+                       [user.email], function(err, data) {
+         if(err) {
+           return cb_(err);
+         }
+         else if(data.rows.length > 0) {
+           user.user_id = data.rows[0].user_id;
+           exist = true;
+         }
+         else {
+           exist = false;
+         }
+         return cb_();
+       });
+    },
+    function(cb_) {
+      if(!exist) {
+        common.pg.query('INSERT INTO users (email, is_verified) ' + 
+                        'VALUES ($1, $2) RETURNING user_id', 
+                        [user.email, user.is_verified], 
+                        function(err, data) {
+          if(err) {
+            return cb_(err);
+          }
+          user.user_id = data.rows[0].user_id;
+          return cb_();
+        });
+      }
+      else {
+        return cb_();
+      }
+    },
+    function(cb_) {
+      common.cio.identify(user.user_id.toString(),
+                          user.email, {
+                            is_verified: user.is_verified,
+                            created_at: Math.floor(Date.now() / 1000)
+                          }, cb_);
+    },
+    function(cb_) {
+      if(!exist) {
+        common.cio.track(user.user_id.toString(), 'front:auth:signup', {}, cb_);
+      }
+      else {
+        return cb_();
+      }
+    }
+  ], function(err) {
+    if(err) {
+      return next(err);
+    }
+    if(req.param('callback')) {
+      return res.jsonp(user);
+    }
+    else {
+      return res.json(user);
+    }
+  });
+};
+
 //
 // ### POST /auth/signup
 //
@@ -88,7 +175,7 @@ exports.post_signup = function(req, res, next) {
                               'Invalid Signup: Field Missing'));
       }
     
-      var email_r = /^[a-z0-9._-+%]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+      var email_r = /^[a-z0-9\.\_\-\+\%]+@[a-z0-9\.\-]+\.[a-z]{2,}$/;
       if(!email_r.exec(req.body.email)) {
         return cb_(common.err('auth_signup_error',
                               'Invalid Email: ' + req.body.email));
@@ -103,11 +190,11 @@ exports.post_signup = function(req, res, next) {
     },
     function(cb_) {
        common.pg.query('SELECT * FROM users WHERE email=$1', 
-                       [user.email], function(err, rows) {
+                       [user.email], function(err, data) {
          if(err) {
            return cb_(err);
          }
-         else if(rows.length > 0) {
+         else if(data.rows.length > 0) {
            return cb_(common.err('auth_signup_error',
                                  'User already exists: ' + user.email));
          }
@@ -119,24 +206,22 @@ exports.post_signup = function(req, res, next) {
                       'VALUES ($1, $2, $3)', 
                       [user.email, user.master, user.is_verified], 
                       function(err, data) {
-        console.log(data);
-        return cb_(err);
+        if(err) {
+          return cb_(err);
+        }
+        user.user_id = data.rows[0].user_id;
+        return cb_();
       });
     },
     function(cb_) {
-      /*
-      common.cio.identify(data.insertId.toString(),
-                             user.email, {
-                               is_verified: user.is_verified
-                             }, cb_);
-      */
-      return cb_();
+      common.cio.identify(user.user_id.toString(),
+                          user.email, {
+                            is_verified: user.is_verified,
+                            created_at: Math.floor(Date.now() / 1000)
+                          }, cb_);
     },
     function(cb_) {
-      /*
-        common.cio.track(data.insertId.toString(), 'front:auth:signup', {}, cb_);
-      */
-      return cb_();
+      common.cio.track(user.user_id.toString(), 'front:auth:signup', {}, cb_);
     }
   ], function(err) {
     if(err) {
@@ -168,10 +253,7 @@ exports.post_signin = function(req, res, next) {
       });
     },
     function(cb_) {
-      /*
-        common.cio.track(user.user_id, 'front:auth:signin', {}, cb_);
-      */
-      return cb_();
+      common.cio.track(user.user_id.toString(), 'front:auth:signup', {}, cb_);
     }
   ], function(err) {
     if(err) {
@@ -246,7 +328,7 @@ exports.get_verify_code = function(req, res, next) {
                                  'No Redirect URL: ' + 
                                  req.param('redirect_url')));
       }
-      var email_r = /^[a-z0-9._-+%]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+      var email_r = /^[a-z0-9\.\_\-\+\%]+@[a-z0-9\.\-]+\.[a-z]{2,}$/;
       if(!email_r.exec(req.body.email)) {
         return cb_(common.err('auth_verify_error',
                               'Invalid Email: ' + req.body.email));
@@ -267,16 +349,16 @@ exports.get_verify_code = function(req, res, next) {
     },
     function(cb_) {
       common.pg.query('SELECT * FROM users WHERE email=$1',
-                      [req.body.email], function(err, rows) {
+                      [req.body.email], function(err, data) {
          if(err) {
            return cb_(err);
          }
-         else if(rows.length === 0) {
+         else if(data.rows.length === 0) {
            return cb_(common.err('auth_verify_error',
                                  'User not found: ' + req.body.email));
          }
          else {
-           user = rows[0];
+           user = data.rows[0];
            return cb_();
          }
       });
