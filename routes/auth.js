@@ -48,7 +48,7 @@ exports.authenticate = function(email, master) {
   async.series([
     function(cb_) {
        common.pg.query('SELECT * FROM users WHERE email=$1', 
-                       [auth.email], function(err, data.rows) {
+                       [auth.email], function(err, data) {
          if(err) {
            return cb_(err);
          }
