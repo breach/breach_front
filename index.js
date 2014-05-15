@@ -7,6 +7,7 @@
  * @author: spolu
  *
  * @log:
+ * - 2014-05-15 spolu   Update route
  * - 2014-05-02 spolu   Creation
  */
 "use strict"
@@ -26,11 +27,7 @@ var setup = function() {
   //
   app.get( '/auth/join',                require('./routes/auth.js').get_join);
 
-  app.post('/auth/signup',              require('./routes/auth.js').post_signup);
-  app.post('/auth/signin',              require('./routes/auth.js').post_signin);
-
-  app.post('/auth/verify/request',      require('./routes/auth.js').post_verify_request);
-  app.get( '/auth/verify/:email/:code', require('./routes/auth.js').get_verify_code);
+  app.get( '/update',                   require('./routes/update.js').get_update);
 };
 
 
