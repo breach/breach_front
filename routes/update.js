@@ -39,7 +39,7 @@ exports.get_update = function(req, res, next) {
     },
     'linux': {
       'x64': {
-        md5: '72365c5d1888c86fb16dfa80e0b5982b',
+        md5: '9719fe450db47edc97b0382c1095c82f',
         version: '0.3.5-alpha.1',
         url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.5-alpha.1/breach-v0.3.5-alpha.1-linux-x64.tar.gz'
       }
