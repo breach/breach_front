@@ -27,14 +27,14 @@ exports.get_update = function(req, res, next) {
   var update = {
     'darwin': {
       'ia32': {
-        md5: '8f80c1125bb92b1f4bcbc2f65ab3bfea',
-        version: '0.3-alpha.0',
-        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3-alpha.0/breach-v0.3-alpha.0-osx-ia32.zip'
+        md5: '2d7a880833bf275a40541c2b9a9f5782',
+        version: '0.3.5-alpha.1',
+        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.5-alpha.1/breach-v0.3.5-alpha.1-darwin-ia32.tar.gz'
       },
       'x64': {
-        md5: '8f80c1125bb92b1f4bcbc2f65ab3bfea',
-        version: '0.3-alpha.0',
-        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3-alpha.0/breach-v0.3-alpha.0-osx-ia32.zip'
+        md5: 'eb8aa0d0e6248a04f1b9c0ce0114c0f3',
+        version: '0.3.5-alpha.1',
+        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.5-alpha.1/breach-v0.3.5-alpha.1-linux-x64.tar.gz'
       }
     },
     'linux': {
