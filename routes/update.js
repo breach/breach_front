@@ -27,7 +27,7 @@ exports.get_update = function(req, res, next) {
   var update = {
     'darwin': {
       'ia32': {
-        md5: '2d7a880833bf275a40541c2b9a9f5782',
+        md5: '7195ae3dd47dfac19b6e1e3ca39388d4',
         version: '0.3.5-alpha.1',
         url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.5-alpha.1/breach-v0.3.5-alpha.1-darwin-ia32.tar.gz'
       }
