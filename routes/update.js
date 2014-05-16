@@ -30,11 +30,6 @@ exports.get_update = function(req, res, next) {
         md5: '2d7a880833bf275a40541c2b9a9f5782',
         version: '0.3.5-alpha.1',
         url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.5-alpha.1/breach-v0.3.5-alpha.1-darwin-ia32.tar.gz'
-      },
-      'x64': {
-        md5: 'eb8aa0d0e6248a04f1b9c0ce0114c0f3',
-        version: '0.3.5-alpha.1',
-        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.5-alpha.1/breach-v0.3.5-alpha.1-linux-x64.tar.gz'
       }
     },
     'linux': {
