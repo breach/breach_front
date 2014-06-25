@@ -29,15 +29,15 @@ exports.get_update = function(req, res, next) {
     'darwin': {
       'ia32': {
         version: '0.3.13-alpha.2',
-        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.13.alpha.2/breach-v0.3.13-alpha.2-darwin-ia32.tar.gz',
-        signature: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.13.alpha.2/breach-v0.3.13-alpha.2-darwin-ia32.tar.gz.sha1sum.asc'
+        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.13-alpha.2/breach-v0.3.13-alpha.2-darwin-ia32.tar.gz',
+        signature: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.13-alpha.2/breach-v0.3.13-alpha.2-darwin-ia32.tar.gz.sha1sum.asc'
       }
     },
     'linux': {
       'x64': {
         version: '0.3.13-alpha.2',
-        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.13.alpha.2/breach-v0.3.13-alpha.2-linux-x64.tar.gz',
-        signature: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.13.alpha.2/breach-v0.3.13-alpha.2-linux-x64.tar.gz.sha1sum.asc'
+        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.13-alpha.2/breach-v0.3.13-alpha.2-linux-x64.tar.gz',
+        signature: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.13-alpha.2/breach-v0.3.13-alpha.2-linux-x64.tar.gz.sha1sum.asc'
       }
     }
   };
