@@ -28,9 +28,9 @@ exports.get_update = function(req, res, next) {
   var update = {
     'darwin': {
       'ia32': {
-        version: '0.3.15-alpha.3',
-        url: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.15-alpha.3/breach-v0.3.15-alpha.3-darwin-ia32.tar.gz',
-        signature: 'https://s3.amazonaws.com/breach_releases/breach/v0.3.15-alpha.3/breach-v0.3.15-alpha.3-darwin-ia32.tar.gz.sha1sum.asc'
+        version: '0.3.20-alpha.5',
+        url: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.20-alpha.5/breach-v0.3.20-alpha.5-darwin-x64.tar.gz',
+        signature: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.20-alpha.5/breach-v0.3.20-alpha.5-darwin-x64.tar.gz.sha1sum.asc'
       }
     },
     'linux': {
