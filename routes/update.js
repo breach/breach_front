@@ -29,15 +29,15 @@ exports.get_update = function(req, res, next) {
     'darwin': {
       'ia32': {
         version: '0.3.21-alpha.5',
-        url: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.21-alpha.5/breach-v0.3.21-alpha.5-darwin-ia32.tar.gz',
-        signature: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.21-alpha.5/breach-v0.3.21-alpha.5-darwin-ia32.tar.gz.sha1sum.asc'
+        url: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.22-alpha.6/breach-v0.3.22-alpha.6-darwin-ia32.tar.gz',
+        signature: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.22-alpha.6/breach-v0.3.22-alpha.6-darwin-ia32.tar.gz.sha1sum.asc'
       }
     },
     'linux': {
       'x64': {
         version: '0.3.21-alpha.5',
-        url: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.21-alpha.5/breach-v0.3.21-alpha.5-linux-x64.tar.gz',
-        signature: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.21-alpha.5/breach-v0.3.21-alpha.5-linux-x64.tar.gz.sha1sum.asc'
+        url: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.22-alpha.6/breach-v0.3.22-alpha.6-linux-x64.tar.gz',
+        signature: 'https://raw.githubusercontent.com/breach/releases/master/v0.3.22-alpha.6/breach-v0.3.22-alpha.6-linux-x64.tar.gz.sha1sum.asc'
       }
     }
   };
